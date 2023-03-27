@@ -2,11 +2,14 @@ import React from 'react'
 import './post.css'
 import { useState } from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import { AddPost, deletPost } from '../rtk/postsSlice'
+import { AddPost, deletPost, updatePost } from '../rtk/postsSlice'
 
 function Post() {
 const [title, setTitle]=useState("")
 const [desc, setDesc]=useState("")
+
+const [updatedTitle, setUpdatedTitle]=useState("");
+const [updatedDesc, setUpdatedDesc]=useState("")
 
 const [isedit, setIsedit]=useState(false);
 const [id, setId]=useState(null)
@@ -66,10 +69,19 @@ setDesc("");
         isedit && id === post.id &&
         <>
       <div class="m-3">
-    <input type="text" placeholder='enter yout title' className='m-3'/>
-    <input type="text" placeholder='enter yout desc'/>
+    <input type="text" placeholder='enter yout title' className='m-3' 
+    onChange={(e) => setUpdatedTitle(e.target.value)}
+    />
+    <input type="text" placeholder='enter yout desc' 
+    onChange={(e) => setUpdatedDesc(e.target.value)}
+    />
   </div>
-          <button className='btn btn-primary'>Edit Sure</button>
+          <button onClick={() =>{ dispatch(updatePost({
+            id: post.id, title: updatedTitle, desc: updatedDesc
+          }))
+          setIsedit(false)
+        }
+          } className='btn btn-primary'>Edit Sure</button>
         </>
       }
   </div>
