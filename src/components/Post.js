@@ -2,7 +2,7 @@ import React from 'react'
 import './post.css'
 import { useState } from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import { AddPost } from '../rtk/postsSlice'
+import { AddPost, deletPost } from '../rtk/postsSlice'
 
 function Post() {
 const [title, setTitle]=useState("")
@@ -24,20 +24,23 @@ const handleSubmit = (e) => {
       <form onSubmit={handleSubmit}>
   <div className="mb-3" style={ {marginTop: "50px"} }>
     <label htmlFor="exampleInputText" className="form-label">Text Title </label>
-    <input 
+    <input value={title}
     onChange={(e) => setTitle(e.target.value)}
     type="text" className="form-control" id="exampleInputText"  placeholder='pleace enter your title'
      aria-describedby="textHelp" />
   </div>
   <div className="mb-3">
     <label htmlFor="exampleInputPassword1" className="form-label">Description</label>
-    <input 
+    <input value={desc}
         onChange={(e) => setDesc(e.target.value)}
     type="text" className="form-control" id="exampleInputPassword1" placeholder='pleace enter your description' />
   </div>
 
   <button 
-  onClick={() => {dispatch(AddPost({id: 1, title, desc}))}}
+  onClick={() => {dispatch(AddPost({id: posts.length +1, title, desc}))
+setTitle("");
+setDesc("");
+}}
   type="submit" className="btn btn-primary">ADD Post</button>
 
 
@@ -47,7 +50,9 @@ const handleSubmit = (e) => {
       <h2 > post title is :  {post.title} </h2>
       <h5> post Description is :{post.desc} </h5>
       <button type="submit" className="btn btn-primary" style={{margin: "0 10px"}}>Edit</button>
-      <button type="submit" className="btn btn-danger">Delete</button>
+      <button 
+      onClick={() => dispatch(deletPost(post.id))}
+      type="submit" className="btn btn-danger">Delete</button>
   </div>
     ))
   }
