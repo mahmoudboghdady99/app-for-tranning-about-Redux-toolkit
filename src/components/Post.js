@@ -7,7 +7,9 @@ import { AddPost, deletPost } from '../rtk/postsSlice'
 function Post() {
 const [title, setTitle]=useState("")
 const [desc, setDesc]=useState("")
-console.log(title, desc);
+
+const [isedit, setIsedit]=useState(false);
+const [id, setId]=useState(null)
 
 const dispatch=useDispatch()
 
@@ -49,10 +51,27 @@ setDesc("");
       <div key={post.id} style={ {marginTop: "50px", background: "#fff", textAlign: "center", padding: "10px"} }>
       <h2 > post title is :  {post.title} </h2>
       <h5> post Description is :{post.desc} </h5>
-      <button type="submit" className="btn btn-primary" style={{margin: "0 10px"}}>Edit</button>
+      <button 
+      onClick={() => {
+        setIsedit(true)
+        setId(post.id)
+      }
+      
+      }
+      type="submit" className="btn btn-primary" style={{margin: "0 10px"}}>Edit</button>
       <button 
       onClick={() => dispatch(deletPost(post.id))}
       type="submit" className="btn btn-danger">Delete</button>
+      {
+        isedit && id === post.id &&
+        <>
+      <div class="m-3">
+    <input type="text" placeholder='enter yout title' className='m-3'/>
+    <input type="text" placeholder='enter yout desc'/>
+  </div>
+          <button className='btn btn-primary'>Edit Sure</button>
+        </>
+      }
   </div>
     ))
   }
